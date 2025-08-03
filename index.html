@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Lucky Money - Đăng ký / Đăng nhập</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #800000;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 50px;
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: white;
+            color: #800000;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .form {
+            display: none;
+            margin-top: 20px;
+        }
+        input {
+            display: block;
+            margin: 5px 0;
+            padding: 8px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chào mừng bạn đến với Lucky Money</h1>
+    <button onclick="showForm('register')">Đăng ký tài khoản</button>
+    <button onclick="showForm('login')">Đăng nhập tài khoản</button>
+
+    <div id="registerForm" class="form">
+        <h3>Đăng ký</h3>
+        <input type="text" id="nickname" placeholder="Biệt danh (≥ 5 ký tự)">
+        <input type="text" id="phone" placeholder="Số điện thoại (10 số)">
+        <input type="email" id="email" placeholder="Email hợp lệ">
+        <button onclick="register()">Đăng ký</button>
+    </div>
+
+    <div id="loginForm" class="form">
+        <h3>Đăng nhập</h3>
+        <input type="text" id="login_nickname" placeholder="Biệt danh">
+        <input type="text" id="login_phone" placeholder="SĐT">
+        <input type="email" id="login_email" placeholder="Email">
+        <button onclick="login()">Đăng nhập</button>
+    </div>
+
+    <script>
+        function showForm(type) {
+            document.getElementById('registerForm').style.display = type === 'register' ? 'block' : 'none';
+            document.getElementById('loginForm').style.display = type === 'login' ? 'block' : 'none';
+        }
+
+        function register() {
+            let nickname = document.getElementById("nickname").value;
+            let phone = document.getElementById("phone").value;
+            let email = document.getElementById("email").value;
+
+            if (nickname.length < 5 || !/^[0-9]{10}$/.test(phone) || !email.includes("@")) {
+                alert("Vui lòng nhập đúng thông tin!");
+                return;
+            }
+
+            let user = { nickname, phone, email };
+            localStorage.setItem("user", JSON.stringify(user));
+            alert("Đăng ký thành công! Giờ bạn có thể đăng nhập.");
+        }
+
+        function login() {
+            let nickname = document.getElementById("login_nickname").value;
+            let phone = document.getElementById("login_phone").value;
+            let email = document.getElementById("login_email").value;
+
+            let storedUser = JSON.parse(localStorage.getItem("user"));
+            if (storedUser && storedUser.nickname === nickname && storedUser.phone === phone && storedUser.email === email) {
+                window.location.href = "mission.html";
+            } else {
+                alert("Thông tin không đúng!");
+            }
+        }
+    </script>
+</body>
+</html>

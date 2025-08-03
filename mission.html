@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Nhiệm vụ kiếm tiền</title>
+    <style>
+        body {
+            background-color: #800000;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding-top: 40px;
+        }
+        .money {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .task {
+            margin-top: 20px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: white;
+            color: #800000;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="money">Số dư: <span id="money">1000</span> VND</div>
+    <div class="task">
+        <h3>Nhiệm vụ 1: Xem video nhận 30Đ</h3>
+        <button onclick="startTask()">Thực hiện nhiệm vụ</button>
+    </div>
+
+    <script>
+        let lastCompleted = localStorage.getItem("task_done_date");
+        let today = new Date().toISOString().split("T")[0];
+        let money = parseInt(localStorage.getItem("money") || "1000");
+
+        document.getElementById("money").innerText = money;
+
+        function startTask() {
+            if (lastCompleted === today) {
+                alert("Bạn đã làm nhiệm vụ hôm nay rồi!");
+                return;
+            }
+
+            localStorage.setItem("task_start_time", Date.now().toString());
+            window.location.href = "https://www.facebook.com/share/r/1AmC8ra7vK/?mibextid=wwXIfr";
+            setTimeout(() => {
+                window.location.href = "mission.html";
+            }, 13000);
+        }
+
+        window.onload = () => {
+            let start = parseInt(localStorage.getItem("task_start_time") || "0");
+            if (start > 0) {
+                let elapsed = (Date.now() - start) / 1000;
+                if (elapsed >= 13 && lastCompleted !== today) {
+                    money += 30;
+                    localStorage.setItem("money", money.toString());
+                    localStorage.setItem("task_done_date", today);
+                    localStorage.removeItem("task_start_time");
+                    alert("Bạn đã nhận được 30Đ!");
+                }
+            }
+        };
+    </script>
+</body>
+</html>
